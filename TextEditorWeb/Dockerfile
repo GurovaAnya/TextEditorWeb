@@ -1,5 +1,12 @@
 # syntax=docker/dockerfile:1
 FROM mcr.microsoft.com/dotnet/sdk:5.0 AS build-env
+
+# Install Node.js
+RUN curl -fsSL https://deb.nodesource.com/setup_14.x | bash - \
+    && apt-get install -y \
+        nodejs \
+    && rm -rf /var/lib/apt/lists/*
+    
 WORKDIR /app
 
 # Copy csproj and restore as distinct layers
