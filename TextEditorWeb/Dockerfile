@@ -12,7 +12,7 @@ RUN curl -fsSL https://deb.nodesource.com/setup_14.x | bash - \
     && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /src
-COPY ["TextEditorWeb/TextEditorWeb.csproj", "TextEditorWeb/"]
+COPY ["TextEditorWeb.csproj", "TextEditorWeb/"]
 RUN dotnet restore "TextEditorWeb/TextEditorWeb.csproj"
 COPY . .
 WORKDIR "/src/TextEditorWeb"
