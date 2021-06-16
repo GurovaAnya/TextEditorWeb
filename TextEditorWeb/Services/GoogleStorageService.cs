@@ -15,7 +15,7 @@ namespace TextEditorWeb.Services
         public GoogleStorageService()
         {
             this._bucketName = "texteditor-bucket";
-            Environment.SetEnvironmentVariable("GOOGLE_APPLICATION_CREDENTIALS", Environment.GetEnvironmentVariable("GOOGLE_SECRETS"));
+            Environment.SetEnvironmentVariable("GOOGLE_APPLICATION_CREDENTIALS", "google-secret.json");
             var credential = GoogleCredential.GetApplicationDefault();
             _storageClient = StorageClient.Create();
         }
