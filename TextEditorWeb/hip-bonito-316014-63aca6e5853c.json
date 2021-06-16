@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "hip-bonito-316014",
+  "private_key_id": "63aca6e5853c0e2c317d1144a92bebb520ace1cd",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQCbdj22VbBTu77z\n8NjwdhVwUOGskFaUB9+MrAWscOqFguXaof+rRkRYW0PyM+kpOdE3Df7TjkDNedIJ\nPCOTF8m7xq8Q+taAbPVeXODVLCeCaRevshYS+uaTW7mbiqs2AUZPJWs0lBkE8t7N\nnD0vljihTvXxdf8wpKtP7PRaxTngErl5gs4p8mzFbzsaUlYY5DErkoP/anLw7z1H\npPUqVdzJ217YPAJKLfyQOtTn1vaxCKZBzJH2lBPFFy2ArtasUTEAUKWIpy8Qo2WJ\n8+Yo9nzZurDm0kcYGI/Bcp3rmtXsHouAhuy2vYHq+73XMmlLsEqHygKDLAYrGPRY\nR4DskbStAgMBAAECggEAHc2pPw9mYmcX0IRX0qGQspuO6BozvuVTghBodgqfq0DQ\n9/0emqM57wZwHDq/dFvVNAzG0Z/v5HR6Q7L3zvc8gXcxkLvF65D36UM9ByET4fhr\nxg8KFFFtasqm5p7K++t6oym1R7ssoLo+5IQTZtARwzr0A3pvlc+71/LBVbWBxucD\nkW5ZVaVWJEP9Jn6+0msP/G2xpuXQX/cYcgoerqGSmoeKt1ADtUNM3Iuoepw0jbyg\nlcm+JyjfF/4AwBv+RMeCccok/yu0efoAUNRc3qdk0pppHYwNTX9p5z8q25dua6H8\nTtqL60vGxYareZi2KPVDyPGqZh9a1xWIeXrgNUJ4gQKBgQDJGI21g59VGYyLRcDw\nkGFuv5cWNdf/wgM7+gmhFd67a/fvuDpfhsDOcGcURXtFhOYejjlkoWVD5Ym1Akn/\nk/yttZLfTZKqmJAzIyXP5LnnljecHG804pi5PnHbyTI71ztna+bzvpyChj8keeAJ\nGgQ2p33vo+H3US6THi3fFngrKQKBgQDF6CGfNfWc+iqLGn/YwR3kQXwpJmoe9Gnr\nHH1m+SghCeWb+ZAfWuDzxYL2YTk7xNjN6Fda9LQawbNF1mbUTuaU3rz76g1aN2SS\nRchY39HoHHzkirWoJHNhVo/qbApYAIDZker640U5ZZqXkOjA0n0d7/9kn65zIaFc\nw7CfTpZx5QKBgF8MO+6PR7/xU3yAe7E4jNTLuZ3F1VINYXn3tJVuwNfVMFsduHlu\nN7NbbV0nehxhtGK81mO55SMyWuQzMMacK9HvAHyLLcd0VLPW6QhaE4Rie+ZNikJ0\n17q2yRoY/qVKFcnMNlz+uvr2eOHEuR+ULGmowN2DmEpNFLZ0jTnkZOgBAoGBALQK\nsxOpPjG58Jwt1mL1hOETpgW1mdNhXT5z462bO6Oa4lTcW/36ai264KKN3kh+kxH3\nrgjkFzlEQHhnTZMV2HVUkS7IRa9uN0NO0q3vqIF18TTk78/woTrLSg/kjCB1DMNi\nGRh3S5Gk2lfKj8RjeUmT/Y6oKkc5MBg5OuQi1YD1AoGANCG9grYjaGMB++zkm/NO\nFujErM7InOlMivophuS61DJl8x82BYPIOs53HB/lx0g6n8UAwkhoBjqd7GJ1yrmR\nVINX1PZXIKajxmRCFiJ1RL61X/QNfvA9heTRu9HS4rpE6mQoop2+es5WryE0kIMT\nYpMKvSTHqn3OA/+pxyO70dY=\n-----END PRIVATE KEY-----\n",
+  "client_email": "texteditor@hip-bonito-316014.iam.gserviceaccount.com",
+  "client_id": "113995697418164183546",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/texteditor%40hip-bonito-316014.iam.gserviceaccount.com"
+}

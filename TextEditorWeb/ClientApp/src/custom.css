@@ -1,0 +1,29 @@
+/* Provide sufficient contrast against white background */
+a {
+  color: #0366d6;
+}
+
+code {
+  color: #E01A76;
+}
+
+.btn-primary {
+  color: #fff;
+  background-color: #1b6ec2;
+  border-color: #1861ac;
+}
+
+.editArea{
+  background-color: #ffffff;
+  margin : 10px;
+  border: 1px solid black;
+}
+
+.editArea:focus{
+  outline: none;
+}
+
+.backgroundArea{
+  /*background-color: #7d7d7d;*/
+  /*width:100%;*/
+}
