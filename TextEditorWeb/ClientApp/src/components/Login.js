@@ -16,14 +16,6 @@ export default class Login extends Component {
             password: this.state.password
         };
 
-        const requestOptions = {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(data)
-        };
-
         const response =  await axios.post("/api/auth/token", data)
             .catch(error => document.getElementById("error").innerText = "Error!");
         console.log(response);

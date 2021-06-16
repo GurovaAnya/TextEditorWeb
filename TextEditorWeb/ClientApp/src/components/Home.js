@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import {TwitterPicker} from 'react-color';
+import axios from "axios";
 
 export class Home extends Component {
   static displayName = Home.name;
@@ -14,15 +15,23 @@ export class Home extends Component {
 
     constructor(props) {
         super(props);
-        this.state = {name: null, selectedColor: '#000', displayColorPicker: false}
+        this.state = {name: null, text: 'hello <b>bold</b>', selectedColor: '#000', displayColorPicker: false}
     }
 
-    componentDidMount() {
+    async componentDidMount() {
         let id = this.props.match.params.documentId;
-        if (id !== undefined)
-        fetch('/api/Text/'+id)
-            .then(response => response.json())
-            .then(json => this.setState({name: json.name}));
+        if (id !== undefined) {
+
+            const response = await axios.get("/api/text/" + id, this.getHeaderConfig())
+                .catch(error =>this.setState({name: "Unsaved Document"}));
+            if (response !== undefined && response.status === 200)
+            this.setState({
+                name: response.data.name,
+                text: response.data.text
+            });
+            else
+                this.setState({name: "Unsaved Document"});
+        }
         else
             this.setState({name: "Unsaved Document"});
 
@@ -44,7 +53,7 @@ export class Home extends Component {
         console.log(this.props.location.pathname);
 
         return <div >
-            <h1> {this.state.name} </h1>
+            <h1 contentEditable="true"  id="textName"> {this.state.name} </h1>
             <button onClick={()=>this.save()}>Save</button>
             <button onClick={()=>this.CareTaker.applyBinaryStyle(window.getSelection(),'U')}>Underline</button>
             <button onClick={()=>this.CareTaker.applyBinaryStyle(window.getSelection(),'B')}>Bold</button>
@@ -58,7 +67,7 @@ export class Home extends Component {
             <button onClick={ this.handleChangeColorButtonClick }>Change Color</button>
 
             <div class="backgroundArea">
-                <div class="editArea" id="text" contentEditable="true" onKeyDown={(ev) => this.processClick(ev)}>hello <b>bold</b></div>
+                <div class="editArea" id="text" contentEditable="true" onKeyDown={(ev) => this.processClick(ev)} dangerouslySetInnerHTML={{__html: this.state.text}}></div>
             </div >
         </div>
     }
@@ -85,23 +94,47 @@ export class Home extends Component {
           this.CareTaker.undo();
       }
       else if (e.ctrlKey && e.keyCode === 89) //Y
-      {}
+      {
+      }
       else if (e.ctrlKey && e.keyCode === 83) //S
-      {}
+      {
+          e.preventDefault();
+          this.save();
+      }
           
       return true;
     }
     
-    save() {
-          alert(document.getElementById("text").textContent);
+    async save() {
+        let id = this.props.match.params.documentId;
+        const data = {
+            text: document.getElementById('text').innerHTML,
+            id: id,
+            name: document.getElementById('textName').innerText
+        };
+        if (id !== undefined) {
+            const response = await axios.put("/api/text/" + id, data, this.getHeaderConfig())
+                .catch(error => this.setState({name: "Unsaved Document"}));
+            if (response !== undefined && response.status === 204)
+                alert('Saved');
+        }
+        else {
+            const response = await axios.post("/api/text", data, this.getHeaderConfig())
+                .catch(error => this.setState({name: "Unsaved Document"}));
+            if (response !== undefined && response.status === 201) {
+                alert('Saved');
+                window.location.href ='/document/'+ response.data.id;
+            }
+        }
+
     }
     
-    createXml(){
-      alert(123);
-        var parser = new DOMParser();
-        this.xml = parser.parseFromString("<p>hello <b>bold</b></p>>", "text/xml");
-        document.getElementById("text").innerHTML = "<p>hello <b>bold</b></p>";
-        
+    getHeaderConfig(){
+        return   {
+            headers: {
+                Authorization: 'Bearer ' + localStorage.getItem('jwt'),
+            }
+        }
     }
 
     restore(snapshot){
@@ -129,21 +162,3 @@ export class Home extends Component {
         this.CareTaker.changeColor(this.state.selectedColor);
     }
 }
-
-class Snapshot{
-    #editor;
-    //#parentId;
-    //#offset;
-    #element;
-    
-    constructor(editor,
-                //parentId, offset,
-                element) {
-        this.#editor = editor;
-        //this.#parentId = parentId;
-        //this.#offset = offset;
-        this.#element = element;
-    }
-
-}
-

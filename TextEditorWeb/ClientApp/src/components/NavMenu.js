@@ -11,7 +11,8 @@ export class NavMenu extends Component {
 
     this.toggleNavbar = this.toggleNavbar.bind(this);
     this.state = {
-      collapsed: true
+      collapsed: true,
+      loggedIn: localStorage.getItem('jwt') != null
     };
   }
 
@@ -21,6 +22,9 @@ export class NavMenu extends Component {
     });
   }
 
+  componentDidMount() {
+    this.setState({loggedIn: localStorage.getItem('jwt') != null});
+  }
 
   render () {
     return (
@@ -33,7 +37,7 @@ export class NavMenu extends Component {
             <NavLink tag={Link} className="text-dark" to="/document">New text</NavLink>
 
             <Collapse className="d-sm-inline-flex flex-sm-row-reverse" isOpen={!this.state.collapsed} navbar>
-              { localStorage.getItem('jwt') === null ?(
+              {/*{ !this.state.loggedIn ?(*/}
               <ul className="navbar-nav flex-grow">
                 <NavItem>
                   <NavLink tag={Link} className="text-dark" to="/login">Login</NavLink>
@@ -41,15 +45,15 @@ export class NavMenu extends Component {
                 <NavItem>
                   <NavLink tag={Link} className="text-dark" to="/sign-up">Sign Up</NavLink>
                 </NavItem>
-              </ul>
-                  ):
-                  (
-                      <ul className="navbar-nav flex-grow">
+              {/*</ul>*/}
+              {/*    ):*/}
+              {/*    (*/}
+              {/*        <ul className="navbar-nav flex-grow">*/}
                       <NavItem>
                         <NavLink tag={Link} className="text-dark" onClick={()=>this.logOut()}>Logout</NavLink>
                       </NavItem>
                       </ul>
-                  )}
+                  {/*)}*/}
             </Collapse>
           </Container>
         </Navbar>
@@ -60,7 +64,9 @@ export class NavMenu extends Component {
   logOut(){
     localStorage.setItem('jwt', null);
     localStorage.setItem('id', null);
-    this.render();
+    this.setState({loggedIn: false});
+    this.forceUpdate();
     window.location.href ='/document';
+    console.log(localStorage.getItem('jwt'))
   }
 }

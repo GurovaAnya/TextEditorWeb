@@ -29,7 +29,28 @@ namespace TextEditorWeb.Services
             // }
             await _storageClient.UploadObjectAsync(_bucketName, fileName, "text/xml", file.OpenReadStream());
 
-        }        
+        }      
+        
+        public async Task Write(String file, string fileName)
+        {
+            // using (MemoryStream stream = new MemoryStream())
+            // {
+            //     stream.Write(file, 0, file.Length);
+            //     var cloudFile = await _storageClient.UploadObjectAsync(_bucketName, fileName, "text/xml", stream);
+            // }
+            await _storageClient.UploadObjectAsync(_bucketName, fileName, "text/html", GenerateStreamFromString(file));
+
+        }  
+        
+        public static Stream GenerateStreamFromString(string s)
+        {
+            var stream = new MemoryStream();
+            var writer = new StreamWriter(stream);
+            writer.Write(s);
+            writer.Flush();
+            stream.Position = 0;
+            return stream;
+        }
 
         public async Task<byte []> Read(string fileName)
         {
@@ -39,6 +60,16 @@ namespace TextEditorWeb.Services
                 return stream.ToArray();
             }
         }
+        
+        public async Task<string> ReadStr(string fileName)
+        {
+            using (MemoryStream stream = new MemoryStream())
+            {
+                await _storageClient.DownloadObjectAsync(_bucketName, fileName, stream);
+                return System.Text.Encoding.UTF8.GetString(stream.ToArray());
+            }
+        }
+        
 
         public async Task Delete(string fileName)
         {

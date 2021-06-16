@@ -10,6 +10,8 @@ namespace TextEditorWeb.Utils
         {
             CreateMap<Text, TextResponse>();
             CreateMap<TextRequest, Text>();
+            CreateMap<Text, FullTextResponse>();
+            CreateMap<FullTextRequest, Text>();
         }
     }
 }

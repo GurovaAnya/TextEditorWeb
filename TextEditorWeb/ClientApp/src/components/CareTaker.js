@@ -77,6 +77,9 @@ export function applyBinaryStyle(selection, tag){
 }
 
 export function changeColor(color) {
+    let snapshot = this.originator.makeSnapshot();
+    SnapshotHistory.saveToHistory(snapshot);
+
     this.page_content = document.getElementById('text').innerText;
     let selection = window.getSelection();
     let range = selection.getRangeAt(0).cloneRange();

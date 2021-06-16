@@ -13,7 +13,7 @@ using TextEditorWeb.Services;
 
 namespace TextEditorWeb.Controllers
 {
-    //[Authorize]
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class TextController : ControllerBase
@@ -37,7 +37,7 @@ namespace TextEditorWeb.Controllers
             }
 
             var texts = await _context.Texts
-                //.Where(t=> t.UserId.ToString() == User.Identity.Name)
+                .Where(t=> t.UserId.ToString() == User.Identity.Name)
                 .ToListAsync();
             
             return Ok(_mapper.Map<IEnumerable<Text>, IEnumerable<TextResponse>>(texts));
@@ -45,7 +45,7 @@ namespace TextEditorWeb.Controllers
 
         // GET: api/Text/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<TextResponse>> GetText(int id)
+        public async Task<ActionResult<FullTextResponse>> GetText(int id)
         {
             if (User.Identity == null)
             {
@@ -54,7 +54,7 @@ namespace TextEditorWeb.Controllers
 
             var text = await _context.Texts
                 .Where(t=> 
-                    //t.UserId.ToString() == User.Identity.Name && 
+                    t.UserId.ToString() == User.Identity.Name && 
                            t.Id == id).FirstOrDefaultAsync();
 
             if (text == null)
@@ -62,37 +62,38 @@ namespace TextEditorWeb.Controllers
                 return NotFound();
             }
 
-            return _mapper.Map<Text, TextResponse>(text);
+            var fullText =  _mapper.Map<Text, FullTextResponse>(text);
+            fullText.Text = await GetTextFile(text.StorageLink);
+            return fullText;
         }
         
-        // GET: api/Text/5/File
-        [HttpGet("{id}/File")]
-        public async Task<IActionResult> GetTextFile(int id)
+        
+        private async Task<string> GetTextFile(string storageLink)
         {
-            var text = await _context.Texts.FindAsync(id);
-
-            if (text == null)
-            {
-                return NotFound();
-            }
-            
             GoogleStorageService service = new GoogleStorageService();
-            var fileBytes = await service.Read(text.StorageLink);
+            var file = await service.ReadStr(storageLink);
 
-            return File(fileBytes, "multipart/form-data");
+            return file;
         }
 
         // PUT: api/Text/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutText(int id, TextRequest textRequest)
+        public async Task<IActionResult> PutText(int id, FullTextRequest textRequest)
         {
             if (id != textRequest.Id)
             {
                 return BadRequest();
             }
+            
+            if (User.Identity == null)
+            {
+                return BadRequest();
+            }
 
-            var text = await _context.Texts.FindAsync(id);
+            var text = await _context.Texts.Where(t=>t.UserId.ToString()==User.Identity.Name && t.Id == id).FirstOrDefaultAsync();
+            if (text == null)
+                return BadRequest();
             text.Name = textRequest.Name;
             text.LastUpdated = DateTime.Now;
 
@@ -114,28 +115,33 @@ namespace TextEditorWeb.Controllers
                 }
             }
 
+            await PostTextFile(textRequest.Text, text.StorageLink);
             return NoContent();
         }
 
         // POST: api/Text
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<TextResponse>> PostText(TextRequest textRequest)
+        public async Task<ActionResult<TextResponse>> PostText(FullTextRequest textRequest)
         {
-            var text = _mapper.Map<TextRequest, Text>(textRequest);
+            if (User.Identity == null)
+            {
+                return BadRequest();
+            }
+            
+            var text = _mapper.Map<FullTextRequest, Text>(textRequest);
+            text.UserId = Convert.ToInt32(User.Identity.Name);
             text.StorageLink = text.UserId + '/' + text.Name;
             text.LastUpdated = DateTime.Now;
             
             _context.Texts.Add(text);
             await _context.SaveChangesAsync();
+            await PostTextFile(textRequest.Text, text.StorageLink);
             
             return CreatedAtAction("GetText", new { id = text.Id }, text);
         }
         
-        // POST: api/Text/File
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPost("File")]
-        public async Task<ActionResult> PostTextFile([FromForm(Name = "File")]IFormFile content, [FromHeader(Name = "Filename")]string filename)
+        private async Task<ActionResult> PostTextFile(string content, string filename)
         {
             var service = new GoogleStorageService();
             await service.Write(content, filename);
