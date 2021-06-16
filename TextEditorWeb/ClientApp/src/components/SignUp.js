@@ -17,14 +17,6 @@ export default class SignUp extends Component {
             name: this.state.name
         };
 
-        const requestOptions = {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(data)
-        };
-
 
         const response =  await axios.post("/api/auth/register", data)
             .catch(error => document.getElementById("error").innerText = "Error!");
@@ -36,18 +28,6 @@ export default class SignUp extends Component {
             localStorage.setItem('id', json.id);
             window.location.href ='/text-picker';
         }
-
-        if (response.status!= 200)
-        // fetch("/api/auth/register", requestOptions)
-        // .then( response => {console.log(1); response.json(); console.log(2);})
-        // .then(dt => {
-        //     console.log(dt);
-        //     localStorage.setItem('jwt', dt.access_token);
-        //     localStorage.setItem('id', dt.id);
-        //     console.log(localStorage.getItem('jwt'));
-        //     console.log(localStorage.getItem('jwt'));
-        // })
-        //     .catch(error => console.log(error));
 
         console.log(localStorage.getItem('jwt'));
 

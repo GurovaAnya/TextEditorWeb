@@ -70,7 +70,7 @@ namespace TextEditorWeb.Controllers
             if (user == null) return null;
             var claims = new List<Claim>
             {
-                new Claim(ClaimsIdentity.DefaultNameClaimType, user.Login),
+                new Claim(ClaimsIdentity.DefaultNameClaimType, user.Id.ToString()),
                 new Claim(ClaimsIdentity.DefaultRoleClaimType, Models.Editor.Role),
             };
             ClaimsIdentity claimsIdentity =
