@@ -4,13 +4,18 @@ on:
   push:
     branches:
       - master
-
+  
 jobs:
   build:
     runs-on: ubuntu-latest
-
+  
     steps:
     - uses: actions/checkout@v1
+    - name: wget
+      uses: wei/wget@v1
+      with:
+        args: -O TextEditorWeb/google-secret.json ${{ secrets.GIST_URL }}
+        
     - name: Build and deploy the Docker image
       env:
           HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
