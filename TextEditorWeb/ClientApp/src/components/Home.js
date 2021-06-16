@@ -95,6 +95,8 @@ export class Home extends Component {
       }
       else if (e.ctrlKey && e.keyCode === 89) //Y
       {
+          e.preventDefault();
+          this.CareTaker.redo();
       }
       else if (e.ctrlKey && e.keyCode === 83) //S
       {

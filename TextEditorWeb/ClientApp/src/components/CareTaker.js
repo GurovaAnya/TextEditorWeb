@@ -96,7 +96,13 @@ export function changeColor(color) {
 }
 
 export function undo() {
-    let snapshot = SnapshotHistory.getFromHistory();
+    let snapshot = SnapshotHistory.getFromHistory(this.originator.makeSnapshot());
+    if (snapshot != null)
+        this.originator.restore(snapshot);
+}
+
+export function redo(){
+    let snapshot = SnapshotHistory.getFromFutureHistory(this.originator.makeSnapshot());
     if (snapshot != null)
         this.originator.restore(snapshot);
 }

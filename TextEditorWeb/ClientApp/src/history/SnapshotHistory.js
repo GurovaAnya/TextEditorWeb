@@ -7,14 +7,18 @@ export function saveToHistory(snapshot){
     futureHistory.splice(0, futureHistory.length);
 }
 
-export function getFromHistory(){
+export function getFromHistory(current){
+    futureHistory.push(current)
     let snapshot = history.pop();
-    futureHistory.push(snapshot);
     return snapshot;
 }
 
-export function getFromFutureHistory(){
+export function getFromFutureHistory(current){
+    history.push(current);
     let snapshot = futureHistory.pop();
-    history.push(snapshot);
     return snapshot;
+}
+
+export function saveToFutureHistory(snapshot){
+    futureHistory.push(snapshot);
 }
